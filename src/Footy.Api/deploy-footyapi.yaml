@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: footyapi
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: footyapi
+    spec:
+      containers:
+      - name: footyapi
+        image: brianbayes/footyapi:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://*:80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: footyapi
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: footyapi
